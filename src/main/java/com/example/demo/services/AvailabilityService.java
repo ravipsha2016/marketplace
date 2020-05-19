@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Cab;
+import com.example.demo.response.AvailabilityRegisteredResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -31,6 +34,18 @@ public class AvailabilityService {
 
     public LinkedList<Cab> getavailableCabsPool(){
         return this.availableCabsPool;
+    }
+
+
+    public AvailabilityRegisteredResponse registerAvailability(Cab cab){
+
+        if(registerService.getMembership(cab)){
+            getavailableCabsPool().add(cab);
+            return new AvailabilityRegisteredResponse(cab , "Availability registered Successfully " );
+        }
+        else
+            return new AvailabilityRegisteredResponse(cab , "Failure: Cab is not registered with aggregator" );
+
     }
 
 
