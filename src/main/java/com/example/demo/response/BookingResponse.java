@@ -1,18 +1,30 @@
 package com.example.demo.response;
 
-import com.example.demo.models.Passenger;
-
 import java.util.List;
 
 public class BookingResponse {
     String status;
     Boolean isLastPassenger;
     List<String>fellow_travellers;
+    String registrationNumber;
+    boolean waitingForMorePassengers;
 
-    public BookingResponse(String status, Boolean isLastPassenger, List<String> fellow_travellers) {
+
+    public boolean isWaitingForMorePassengers() {
+        return waitingForMorePassengers;
+    }
+
+    public void setWaitingForMorePassengers(boolean waitingForMorePassengers) {
+        this.waitingForMorePassengers = waitingForMorePassengers;
+    }
+
+
+    public BookingResponse(String status, Boolean isLastPassenger, List<String> fellow_travellers, String registrationNumber, boolean waitingForMorePassengers) {
         this.status = status;
         this.isLastPassenger = isLastPassenger;
         this.fellow_travellers = fellow_travellers;
+        this.registrationNumber = registrationNumber;
+        this.waitingForMorePassengers = waitingForMorePassengers;
     }
 
     public String getStatus() {
@@ -38,4 +50,14 @@ public class BookingResponse {
     public void setFellow_travellers(List<String> fellow_travellers) {
         this.fellow_travellers = fellow_travellers;
     }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
+
 }

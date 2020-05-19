@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
-public class Passenger {
+import java.io.Serializable;
+
+public class Passenger  implements Serializable {
     String name;
     Geneder gender;
 
@@ -10,9 +12,6 @@ public class Passenger {
 
     public Geneder getGender() {
         return gender;
-    }
-
-    public Passenger() {
     }
 
     public Passenger(String name, Geneder gender) {

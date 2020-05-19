@@ -4,7 +4,6 @@ import com.example.demo.models.AvailabilityEntity;
 import com.example.demo.models.Cab;
 import com.example.demo.models.Passenger;
 import com.example.demo.response.BookingResponse;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -31,12 +30,17 @@ public class BookingService {
         if(availabilityEntity!=null){
             Cab cab = availabilityEntity.getCab();
             boolean isLastPassenger = cab.isFull();
-            List<String> fellow_travellers = cab.getTravellersList();
+            List<String> travellers = cab.getTravellersList();
+            travellers.remove(passenger.getName());
+            boolean waitingForMorePassengers=true;
 
-            return  new BookingResponse("Success",isLastPassenger,fellow_travellers);
+            if(cab.isFull()){
+                waitingForMorePassengers = false;
+            }
+            return  new BookingResponse("Success",isLastPassenger,travellers,cab.registrationNumber,waitingForMorePassengers);
         }
 
-        return new BookingResponse("Failure",null,null);
+        return new BookingResponse("Failure: Booking failed ,No cabs are available",null,null,null, true);
     }
 
 

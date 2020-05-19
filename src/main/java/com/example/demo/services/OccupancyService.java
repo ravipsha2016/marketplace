@@ -7,8 +7,8 @@ import com.example.demo.models.Seat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class OccupancyService {
@@ -21,7 +21,7 @@ public class OccupancyService {
         this.safetyRuleService = safetyRuleService;
     }
 
-    static List<Cab> partiallyOccupiedCabs = new ArrayList<Cab>();
+    static List<Cab> partiallyOccupiedCabs = new CopyOnWriteArrayList<>();
     int maxBuffer = 4;
 
 
@@ -30,18 +30,17 @@ public class OccupancyService {
         boolean isAllocatedFromPartiallyOccupied = false;
         AvailabilityEntity availabilityEntity =null;
 
-        for(Cab cab : partiallyOccupiedCabs){
-            List<Seat> seats =  cab.seatMatrix;
-            Boolean isSafe = safetyRuleService.isSafe(passenger, seats);
+        /**
+         *
+         * Check partial occupied cabs if any.
+         * Try to occupy, if success return
+         * otherwise book from the available pool and add that cab in partially occupied pool
+         * if the cab becomes full after borading the last passenger , start moving it and remove from partial occupied pool
+         */
 
-            if(isSafe){
-                assignSeat(passenger ,cab);
-                isAllocatedFromPartiallyOccupied = true;
-            }
+         availabilityEntity =  bookFromPartiallyOccupiedPool(passenger);
 
-        }
-
-        if(!isAllocatedFromPartiallyOccupied)
+        if(availabilityEntity==null)
         {
             Cab cab = availabilityService.getAvailableCab();
             if (cab != null && partiallyOccupiedCabs.size() < maxBuffer) {
@@ -58,6 +57,29 @@ public class OccupancyService {
 
     }
 
+    AvailabilityEntity bookFromPartiallyOccupiedPool(Passenger passenger){
+        for(Cab cab : partiallyOccupiedCabs){
+            List<Seat> seats =  cab.seatMatrix;
+            Boolean isSafe = safetyRuleService.isSafe(passenger, seats);
+            if(cab.isFull()){
+                continue;
+            }
+
+            if(isSafe){
+                Seat seat=assignSeat(passenger ,cab);
+                if(seat !=null){
+                    if(cab.isFull()){
+                        partiallyOccupiedCabs.remove(cab);
+                        availabilityService.removeAvailability(cab);
+                    }
+                    return new AvailabilityEntity(cab,seat);
+                }
+            }
+
+        }
+
+        return null;
+    }
 
     Seat assignSeat(Passenger passenger, Cab cab ){
         Seat seat = null;

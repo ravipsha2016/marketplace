@@ -14,7 +14,7 @@ public class AvailabilityService {
     private CabRegisterService registerService;
 
     @Autowired
-    AvailabilityService(CabRegisterService registerService){
+    public AvailabilityService(CabRegisterService registerService){
         this.registerService = registerService;
     }
     static LinkedList<Cab> availableCabsPool = new LinkedList<Cab>();
@@ -46,6 +46,12 @@ public class AvailabilityService {
         else
             return new AvailabilityRegisteredResponse(cab , "Failure: Cab is not registered with aggregator" );
 
+    }
+
+    public void removeAvailability(Cab cab){
+        if(registerService.getMembership(cab)) {
+            getavailableCabsPool().remove(cab);
+        }
     }
 
 
