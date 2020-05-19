@@ -4,6 +4,14 @@ public class Passenger {
     String name;
     Geneder gender;
 
+    public String getName() {
+        return name;
+    }
+
+    public Geneder getGender() {
+        return gender;
+    }
+
     public Passenger() {
     }
 

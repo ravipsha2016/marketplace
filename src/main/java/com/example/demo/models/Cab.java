@@ -57,5 +57,15 @@ public class Cab {
     }
 
 
+    public List<String> getTravellersList(){
+        List<String> passengers = new ArrayList<>();
+        for(Seat seat: seatMatrix){
+            if(!seat.isEmpty){
+                passengers.add(seat.getPassenger().getName());
+            }
+        }
+        return passengers;
+    }
+
 
 }

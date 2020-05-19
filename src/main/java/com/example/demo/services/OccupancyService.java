@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.AvailabilityEntity;
 import com.example.demo.models.Cab;
 import com.example.demo.models.Passenger;
 import com.example.demo.models.Seat;
@@ -24,9 +25,10 @@ public class OccupancyService {
     int maxBuffer = 4;
 
 
-    public boolean getSeat(Passenger passenger) {
+    public AvailabilityEntity getSeat(Passenger passenger) {
 
         boolean isAllocatedFromPartiallyOccupied = false;
+        AvailabilityEntity availabilityEntity =null;
 
         for(Cab cab : partiallyOccupiedCabs){
             List<Seat> seats =  cab.seatMatrix;
@@ -41,15 +43,18 @@ public class OccupancyService {
 
         if(!isAllocatedFromPartiallyOccupied)
         {
-            Cab availableCab = availabilityService.getAvailableCab();
-            if (availableCab != null && partiallyOccupiedCabs.size() < maxBuffer) {
-                partiallyOccupiedCabs.add(availableCab);
-                assignSeat(passenger , availableCab);
+            Cab cab = availabilityService.getAvailableCab();
+            if (cab != null && partiallyOccupiedCabs.size() < maxBuffer) {
+                partiallyOccupiedCabs.add(cab);
+                Seat seat= assignSeat(passenger , cab);
+                if(seat !=null){
+                    availabilityEntity = new AvailabilityEntity(cab,seat);
+                }
 
             }
         }
 
-        return true;
+        return availabilityEntity;
 
     }
 

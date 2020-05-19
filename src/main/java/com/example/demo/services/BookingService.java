@@ -1,11 +1,17 @@
 package com.example.demo.services;
 
+import com.example.demo.models.AvailabilityEntity;
 import com.example.demo.models.Cab;
 import com.example.demo.models.Passenger;
+import com.example.demo.response.BookingResponse;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class BookingService {
@@ -19,14 +25,18 @@ public class BookingService {
      }
 
 
-    public boolean bookCab(Passenger passenger){
-        Boolean request_status = occupancyService.getSeat(passenger);
+    public BookingResponse bookCab(Passenger passenger){
+        AvailabilityEntity availabilityEntity = occupancyService.getSeat(passenger);
 
-        if(request_status){
+        if(availabilityEntity!=null){
+            Cab cab = availabilityEntity.getCab();
+            boolean isLastPassenger = cab.isFull();
+            List<String> fellow_travellers = cab.getTravellersList();
 
+            return  new BookingResponse("Success",isLastPassenger,fellow_travellers);
         }
 
-        return false;
+        return new BookingResponse("Failure",null,null);
     }
 
 
