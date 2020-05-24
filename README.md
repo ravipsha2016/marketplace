@@ -1,111 +1,43 @@
 # marketplace
 
-Endpoints :
+Swagger UI : http://localhost:8080/swagger-ui.html
 
-"/book"
-Sample input 
-  0: male , 1: female
- 
-Book Passenger 1 
- {
-"name":"Rahul",
-"gender": 0 
+
+Booking services for booking a car pool  or an individual cab with the cab aggregator.
+For pooling , 4 passengers are needed and only the following combinations are permitted : 
+All male
+All Females 
+2 Males , 2 Females
+No other combinations are alllowed.
+
+Multi threading synchronization has been  handled.
+
+Primary Endpoints :
+
+1. /book (POST)
+   
+   Input : {
+  "destination": "string",
+  "tripType": "SHARED",
+  "user_uuid": "string"
 }
 
-sample respose :
+Prerequisite : User must be registered, user_uuid will be obtained after registering the user.
+
+
+2. /register/user (POST)
+
+Input :
 {
-    "status": "Success",
-    "fellow_travellers": [],
-    "registrationNumber": "KA01 AB 1233",
-    "waitingForMorePassengers": true,
-    "lastPassenger": false
+  "gender": "MALE",
+  "name": "string",
+  "user_UUId": "string"
 }
 
 
-Book Passenger#2
- {
-"name":"Ravi",
-"gender": 0 
-}
+3. /users (GET)
+gets  all RegisteredUsers
 
-sample respose :
-{
-    "status": "Success",
-    "fellow_travellers": ["Rahul"],
-    "registrationNumber": "KA01 AB 1233",
-    "waitingForMorePassengers": true,
-    "lastPassenger": false
-}
-
-
-Book Passenger#3
- {
-"name":"Alex",
-"gender": 0 
-}
-
-sample respose :
-{
-    "status": "Success",
-    "fellow_travellers": ["Rahul", "Ravi"],
-    "registrationNumber": "KA01 AB 1233",
-    "waitingForMorePassengers": true,
-    "lastPassenger": false
-}
-
-Book Passenger#4
- {
-"name":"Maria",
-"gender": 1
-}
-
-sample respose :
-{
-    "status": "Success",
-    "fellow_travellers": ["Rahul", "Ravi" , "Alex"],
-    "registrationNumber": "KA01 AB 1233",
-    "waitingForMorePassengers": false,
-    "lastPassenger": true
-}
-
-waitingForMorePassengers is false now , cab will move.
-
-Now on a new cab will be alloted from availability pool.
-
-
-
-*******************************************************************
-Endpoint : "/register/cab",
-input : {
-"registrationNumber":"KA01 AB 1236"
-}
-
-
-sample output 
-{
-    "registrationNumber": "KA01 AB 1236",
-    "status": "Cab registered with aggregated successfully "
-}
-
-
-*******************************************************************
-
-Endpoint : "/register/availability"
-input : {
-"registrationNumber":"KA01 AB 1236"
-}
-
-/*Only registerd cabs can register availability*/
-
-sample output 
-{
-    "registrationNumber": "KA01 AB 1236",
-    "status": "Availability registered Successfully "
-}
-
-
-********************************************************************
-
-
-
+4. /register/availability (POST)
+for cabs.
 
