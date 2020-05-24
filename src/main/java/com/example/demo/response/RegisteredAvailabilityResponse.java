@@ -2,7 +2,7 @@ package com.example.demo.response;
 
 import com.example.demo.models.Cab;
 
-public class AvailabilityRegisteredResponse {
+public class RegisteredAvailabilityResponse {
     String registrationNumber;
     String status;
 
@@ -22,8 +22,8 @@ public class AvailabilityRegisteredResponse {
         this.status = status;
     }
 
-    public AvailabilityRegisteredResponse(Cab cab, String status) {
-        this.registrationNumber = cab.registrationNumber;
+    public RegisteredAvailabilityResponse(Cab cab, String status) {
+        this.registrationNumber = cab.getRegistrationNumber();
         this.status = status;
     }
 }

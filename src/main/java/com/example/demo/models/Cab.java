@@ -6,12 +6,27 @@ import java.util.List;
 
 
 public class Cab {
-    public  String registrationNumber;
+    private   String registrationNumber;
     public String model;
     public String color;
-    public int capacity=4;
-    public int current_occupancy;
-    public List<Seat> seatMatrix;
+    private int capacity=4;
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getCurrent_occupancy() {
+        return current_occupancy;
+    }
+
+    private int current_occupancy;
+
+
+    public void setCurrent_occupancy(int current_occupancy) {
+        this.current_occupancy = current_occupancy;
+    }
+
+    private List<Seat> seatMatrix;
 
     public Cab(){
         this.capacity = 4;
@@ -43,6 +58,10 @@ public class Cab {
     }
 
 
+    public List<Seat> getSeatMatrix() {
+        return seatMatrix;
+    }
+
     public Seat getAvailableSeat() {
         if (isFull()) {
             return null;
@@ -61,11 +80,13 @@ public class Cab {
         List<String> passengers = new ArrayList<>();
         for(Seat seat: seatMatrix){
             if(!seat.isEmpty){
-                passengers.add(seat.getPassenger().getName());
+                passengers.add(seat.getUser().getName());
             }
         }
         return passengers;
     }
 
-
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.demo.response;
 
+import com.example.demo.models.User;
+
+import java.io.Serializable;
 import java.util.List;
 
 public class BookingResponse {
@@ -8,6 +11,7 @@ public class BookingResponse {
     List<String>fellow_travellers;
     String registrationNumber;
     boolean waitingForMorePassengers;
+    User user;
 
 
     public boolean isWaitingForMorePassengers() {
@@ -19,12 +23,25 @@ public class BookingResponse {
     }
 
 
-    public BookingResponse(String status, Boolean isLastPassenger, List<String> fellow_travellers, String registrationNumber, boolean waitingForMorePassengers) {
+    public BookingResponse(String status, Boolean isLastPassenger, List<String> fellow_travellers, String registrationNumber, boolean waitingForMorePassengers, User user) {
         this.status = status;
         this.isLastPassenger = isLastPassenger;
         this.fellow_travellers = fellow_travellers;
         this.registrationNumber = registrationNumber;
         this.waitingForMorePassengers = waitingForMorePassengers;
+        this.user= user;
+    }
+
+    public BookingResponse(String status){
+        this.status=status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getStatus() {
@@ -60,4 +77,29 @@ public class BookingResponse {
     }
 
 
+    public static class UserRegistrationResponse implements Serializable {
+        String registration_status;
+        User user;
+
+        public UserRegistrationResponse(String registration_status, User user) {
+            this.registration_status = registration_status;
+            this.user = user;
+        }
+
+        public String getRegistration_status() {
+            return registration_status;
+        }
+
+        public void setRegistration_status(String registration_status) {
+            this.registration_status = registration_status;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+    }
 }

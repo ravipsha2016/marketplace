@@ -2,14 +2,13 @@ package com.example.demo.services;
 
 import com.example.demo.models.AvailabilityEntity;
 import com.example.demo.models.Cab;
-import com.example.demo.models.Passenger;
+import com.example.demo.models.TripType;
+import com.example.demo.models.User;
 import com.example.demo.response.BookingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import requests.BookingRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -24,23 +23,22 @@ public class BookingService {
      }
 
 
-    public BookingResponse bookCab(Passenger passenger){
-        AvailabilityEntity availabilityEntity = occupancyService.getSeat(passenger);
-
+    public BookingResponse bookCab(TripType tripType , User user){
+        AvailabilityEntity availabilityEntity = occupancyService.getSeat(user);
         if(availabilityEntity!=null){
             Cab cab = availabilityEntity.getCab();
             boolean isLastPassenger = cab.isFull();
             List<String> travellers = cab.getTravellersList();
-            travellers.remove(passenger.getName());
+            travellers.remove(user.getName());
             boolean waitingForMorePassengers=true;
 
             if(cab.isFull()){
                 waitingForMorePassengers = false;
             }
-            return  new BookingResponse("Success",isLastPassenger,travellers,cab.registrationNumber,waitingForMorePassengers);
+            return  new BookingResponse("Success",isLastPassenger,travellers,cab.getRegistrationNumber(),waitingForMorePassengers,user);
         }
 
-        return new BookingResponse("Failure: Booking failed ,No cabs are available",null,null,null, true);
+        return new BookingResponse("Failure: Booking failed ,No cabs are available",null,null,null, true,user);
     }
 
 

@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.Cab;
-import com.example.demo.response.AvailabilityRegisteredResponse;
+import com.example.demo.response.RegisteredAvailabilityResponse;
 import com.example.demo.services.AvailabilityService;
 import com.example.demo.services.CabRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,8 @@ public class CabAvailabilityController {
     }
 
     @RequestMapping(value = "/register/availability", method = RequestMethod.POST)
-    ResponseEntity<AvailabilityRegisteredResponse> registerAvailability(@RequestBody Cab cab){
-      AvailabilityRegisteredResponse response=  availabilityService.registerAvailability(cab);
-      return new ResponseEntity<AvailabilityRegisteredResponse>(response, HttpStatus.OK);
-
+    ResponseEntity<RegisteredAvailabilityResponse> registerAvailability(@RequestBody Cab cab){
+      RegisteredAvailabilityResponse response=  availabilityService.registerAvailability(cab);
+      return new ResponseEntity<RegisteredAvailabilityResponse>(response, HttpStatus.OK);
     }
 }

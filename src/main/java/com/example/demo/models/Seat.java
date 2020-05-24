@@ -2,7 +2,7 @@ package com.example.demo.models;
 
 public class Seat {
     public Boolean isEmpty;
-    public Passenger passenger;
+    public User user;
 
     public Boolean getEmpty() {
         return isEmpty;
@@ -10,18 +10,18 @@ public class Seat {
 
     public Seat() {
         this.isEmpty = true;
-        this.passenger = null;
+        this.user = null;
     }
 
     public void setEmpty(Boolean empty) {
         isEmpty = empty;
     }
 
-    public Passenger getPassenger() {
-        return passenger;
+    public User getUser() {
+        return user;
     }
 
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
